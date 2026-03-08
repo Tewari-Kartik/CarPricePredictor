@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<title>Car Price Predictor</title>
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>🚗 Car Price Predictor</h1>
+
+<form action="/predict" method="post">
+
+<label>Select Company</label>
+<select name="company" id="company" onchange="updateModels()" required>
+
+<option value="">Select Company</option>
+
+{% for company in companies %}
+<option value="{{company}}">{{company}}</option>
+{% endfor %}
+
+</select>
+
+
+<label>Select Model</label>
+<select name="model" id="car_models" onchange="showCarImage()" required>
+<option value="">Select Model</option>
+</select>
+
+<img id="carImage" class="car-image" style="display:none;">
+
+
+<label>Select Year</label>
+<select name="year" required>
+
+<option value="">Select Year</option>
+
+{% for year in years %}
+<option value="{{year}}">{{year}}</option>
+{% endfor %}
+
+</select>
+
+
+<label>Select Fuel Type</label>
+<select name="fuel_type" required>
+
+<option value="">Select Fuel Type</option>
+
+{% for fuel in fuel_types %}
+<option value="{{fuel}}">{{fuel}}</option>
+{% endfor %}
+
+</select>
+
+
+<label>Kilometers Driven</label>
+<input type="number" name="kms_driven" placeholder="Enter kilometers driven" required>
+
+<br>
+
+<button type="submit" onclick="showLoader()">Predict Price</button>
+
+<div id="loader" class="loader" style="display:none;"></div>
+
+</form>
+
+
+{% if prediction_text %}
+
+<div class="result">
+{{ prediction_text }}
+</div>
+
+<div class="accuracy">
+{{ accuracy_text }}
+</div>
+
+<canvas id="priceChart"></canvas>
+
+<script>
+
+var predictedPrice = {{ predicted_price }};
+
+var ctx = document.getElementById('priceChart').getContext('2d');
+
+new Chart(ctx,{
+type:'bar',
+data:{
+labels:['Predicted Price'],
+datasets:[{
+label:'Car Price (₹)',
+data:[predictedPrice],
+borderWidth:1
+}]
+},
+options:{
+scales:{
+y:{
+beginAtZero:true
+}
+}
+}
+});
+
+</script>
+
+{% endif %}
+
+</div>
+
+
+<script>
+
+var carData = {{ car_data | safe }};
+
+function updateModels(){
+
+var company = document.getElementById("company").value;
+var modelDropdown = document.getElementById("car_models");
+
+modelDropdown.innerHTML = '<option value="">Select Model</option>';
+
+var filteredModels = carData.filter(function(car){
+return car.company === company;
+});
+
+var uniqueModels = [...new Set(filteredModels.map(car => car.name))];
+
+uniqueModels.forEach(function(model){
+
+var option = document.createElement("option");
+
+option.value = model;
+option.text = model;
+
+modelDropdown.appendChild(option);
+
+});
+
+}
+
+function showLoader(){
+document.getElementById("loader").style.display="block";
+}
+
+function showCarImage(){
+
+var model = document.getElementById("car_models").value;
+var img = document.getElementById("carImage");
+
+var images = {
+
+"Swift":"https://imgd.aeplcdn.com/664x374/n/cw/ec/54399/swift-exterior-right-front-three-quarter.jpeg",
+"Alto":"https://imgd.aeplcdn.com/664x374/n/cw/ec/39013/alto-exterior-right-front-three-quarter.jpeg",
+"i20":"https://imgd.aeplcdn.com/664x374/n/cw/ec/40513/i20-exterior-right-front-three-quarter.jpeg",
+"Verna":"https://imgd.aeplcdn.com/664x374/n/cw/ec/139177/verna-exterior-right-front-three-quarter.jpeg",
+"City":"https://imgd.aeplcdn.com/664x374/n/cw/ec/40519/city-exterior-right-front-three-quarter.jpeg",
+"Innova":"https://imgd.aeplcdn.com/664x374/n/cw/ec/51435/innova-crysta-exterior-right-front-three-quarter.jpeg"
+
+};
+
+if(images[model]){
+img.src = images[model];
+img.style.display = "block";
+}
+else{
+img.style.display = "none";
+}
+
+}
+
+</script>
+
+</body>
+</html>
