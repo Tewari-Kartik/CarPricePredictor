@@ -5,18 +5,14 @@ import json
 
 app = Flask(__name__)
 
-# Load dataset
 car = pd.read_csv("Cleaned_Car_data.csv")
 
-# Load trained model
 model = pickle.load(open("LinearRegressionModel.pkl", "rb"))
 
-# Dropdown data
 companies = sorted(car["company"].unique())
 years = sorted(car["year"].unique(), reverse=True)
 fuel_types = sorted(car["fuel_type"].unique())
 
-# Company + model mapping
 car_data = car[["company","name"]].drop_duplicates().to_dict(orient="records")
 
 
@@ -69,6 +65,5 @@ def predict():
         car_data=json.dumps(car_data)
     )
 
-
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(host="0.0.0.0", port=10000)
