@@ -47,3 +47,50 @@ A quick look at how the garage is organized:
  ┣ 📜 README.md                 # You are here!
  ┣ 📜 main.py                   # The ignition: Flask application router
  ┗ 📜 requirements.txt          # The toolbox: Python dependencies
+```
+
+---
+
+## 🚀 Run It Locally
+
+Want to take it for a spin on your local machine? Follow these simple steps:
+
+1. **Clone the repository:**
+   ```bash
+   git clone [https://github.com/Tewari-Kartik/CarPricePredictor.git](https://github.com/Tewari-Kartik/CarPricePredictor.git)
+   cd CarPricePredictor
+
+2. **Create a virtual environment:**
+   ```bash
+   python -m venv venv
+   source venv/bin/activate
+
+3. **Install the required dependencies:**
+   ```bash
+   pip install -r requirements.txt
+
+4. **Start the engine:**
+   ```bash
+   python main.py
+
+---
+
+## 🤝 Contributing
+
+Contributions, issues, and feature requests are welcome! Feel free to check the issues page if you want to contribute.
+
+1. Fork the project
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+---
+
+## 👨‍💻 Author
+
+**Kartik Tewari** * GitHub: [@Tewari-Kartik](https://github.com/Tewari-Kartik)
+
+---
+*If you found this project helpful or interesting, please consider giving it a ⭐!*
+
